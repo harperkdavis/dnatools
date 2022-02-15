@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>DNATools</title>
+        <style>
+            * {
+                font-family: 'Courier New', Courier, monospace;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>DNA Tools</h1>
+        <h4>Created by harperkdavis, so I'm technically not using an online calculator</h4>
+        <button id="dashesButton">Add Dashes</button>
+        <button id="dnaToRnaButton">DNA to RNA</button>
+        <button id="rnaToDnaButton">RNA to DNA</button>
+        <button id="flipButton">Flip</button>
+        <button id="toCodons">To Codons (Must be RNA)</button>
+        <br>
+        <br>
+        <textarea id="dna" name="DNA" rows="20" cols="50">Insert DNA Sequence here</textarea>
+        <script>
+            const textArea = document.getElementById('dna');
+
+            document.getElementById('dashesButton').onclick = function() {
+                let lines = textArea.value.split('\n');
+                let newLines = [];
+                lines.forEach(line => {
+                    let newLine = '';
+                    let texline = line.replaceAll('-', '');
+                    for (let i = 0; i < texline.length / 3; i++) {
+                        newLine += texline.substring(3 * i, 3 * i + 3) + '-';
+                    }
+                    newLines.push(newLine);
+                });
+                textArea.value = '';
+                newLines.forEach(nl => {
+                    textArea.value += nl.substring(0, nl.length - 1).toUpperCase() + '\n';
+                });
+            }
+
+            document.getElementById('flipButton').onclick = function() {
+                let val = textArea.value.toLowerCase();
+                val = val.replaceAll('c', '1');
+                val = val.replaceAll('g', 'c');
+                val = val.replaceAll('1', 'g');
+
+                if (val.includes('u')) {
+                    val = val.replaceAll('a', '1');
+                    val = val.replaceAll('u', 'a');
+                    val = val.replaceAll('1', 'u');
+                } else {
+                    val = val.replaceAll('a', '1');
+                    val = val.replaceAll('t', 'a');
+                    val = val.replaceAll('1', 't');
+                }
+
+                textArea.value = val.toUpperCase();
+            }
+
+            document.getElementById('dnaToRnaButton').onclick = function() {
+                let val = textArea.value.toLowerCase();
+                
+                val = val.replaceAll('t', 'u');
+
+                textArea.value = val.toUpperCase();
+            }
+
+            document.getElementById('rnaToDnaButton').onclick = function() {
+                let val = textArea.value.toLowerCase();
+                
+                val = val.replaceAll('u', 't');
+
+                textArea.value = val.toUpperCase();
+            }
+
+            document.getElementById('toCodons').onclick = function() {
+                let val = textArea.value.toLowerCase();
+                
+                val = val.replaceAll(/(aug)/g, 'Methionine');
+                val = val.replaceAll(/(au[acu])/g, 'Isoleucine');
+                val = val.replaceAll(/(ag[ga])/g, 'Arginine');
+                val = val.replaceAll(/(ag[cu])/g, 'Serine');
+                val = val.replaceAll(/(ac[gacu])/g, 'Thereonine');
+                val = val.replaceAll(/(aa[ga])/g, 'Lysine');
+                val = val.replaceAll(/(aa[cu])/g, 'Asparagine');
+
+                val = val.replaceAll(/(uu[ga])/g, 'Leucine');
+                val = val.replaceAll(/(uu[cu])/g, 'Phenylalanine');
+                val = val.replaceAll(/(ug[g])/g, 'Tryptophan');
+                val = val.replaceAll(/(ug[a])/g, 'STOP');
+                val = val.replaceAll(/(ug[cu])/g, 'Cysteine');
+                val = val.replaceAll(/(uc[gacu])/g, 'Serine');
+                val = val.replaceAll(/(ua[ga])/g, 'STOP');
+                val = val.replaceAll(/(ua[cu])/g, 'Tyrosine');
+
+                val = val.replaceAll(/(gu[gacu])/g, 'Valine');
+                val = val.replaceAll(/(gg[gacu])/g, 'Glycine');
+                val = val.replaceAll(/(gc[gacu])/g, 'Alanine');
+                val = val.replaceAll(/(ga[ga])/g, 'Glutamic acid');
+                val = val.replaceAll(/(ga[cu])/g, 'Aspartic acid');
+
+                val = val.replaceAll(/(cu[gacu])/g, 'Leucine');
+                val = val.replaceAll(/(cg[gacu])/g, 'Arginine');
+                val = val.replaceAll(/(cc[gacu])/g, 'Proline');
+                val = val.replaceAll(/(ca[ga])/g, 'Glutamine');
+                val = val.replaceAll(/(ca[cu])/g, 'Histidine');
+
+                textArea.value = val;
+            }
+
+
+        </script>
+    </body>
+</html>
